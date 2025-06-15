@@ -4,9 +4,11 @@ import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
+    app.setGlobalPrefix('api/v1');
+
    const config = new DocumentBuilder()
     .setTitle('Mini Thinking API')
-    .setDescription('Mini Thinking 서비스용 API 문서입니다.')
+    .setDescription('Mini Thinking  API 문서입니다.')
     .setVersion('1.0')
     .addTag('mini-thinking')
     .build();
