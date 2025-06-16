@@ -9,6 +9,9 @@ export const notices = mysqlTable('notices', {
   authorProfileId: bigint('author_profile_id', { mode: 'number' }).notNull().references(() => profiles.id),
   title: varchar('title', { length: 255 }).notNull(),
   content: text('content'),
+  importance: mysqlEnum('importance', ['NORMAL', 'IMPORTANT'])
+    .default('NORMAL')
+    .notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
 });

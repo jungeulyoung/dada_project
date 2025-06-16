@@ -1,12 +1,15 @@
-import { mysqlTable, bigint, varchar, timestamp, primaryKey } from 'drizzle-orm/mysql-core';
+import { mysqlTable, bigint, varchar, timestamp, primaryKey,mysqlEnum } from 'drizzle-orm/mysql-core';
 import { organizations } from './organizations';
 import { profiles } from './users';
 import { relations } from 'drizzle-orm';
+import { exams } from './exams';
 
 // 수업(과목) 템플릿
 export const classes = mysqlTable('classes', {
   id: bigint('id', { mode: 'number' }).primaryKey().autoincrement(),
   organizationId: bigint('organization_id', { mode: 'number' }).notNull().references(() => organizations.id),
+  teacherProfileId: bigint('teacher_profile_id', { mode: 'number' }).references(() => profiles.id),
+
   name: varchar('name', { length: 255 }).notNull(),
   description: varchar('description', { length: 1000 }),
   createdAt: timestamp('created_at').defaultNow().notNull(),
@@ -19,6 +22,7 @@ export const sections = mysqlTable('sections', {
   classId: bigint('class_id', { mode: 'number' }).notNull().references(() => classes.id),
   teacherProfileId: bigint('teacher_profile_id', { mode: 'number' }).references(() => profiles.id),
   name: varchar('name', { length: 255 }).notNull(),
+  status: mysqlEnum('status', ['UPCOMING', 'ONGOING', 'FINISHED']).default('UPCOMING').notNull(),
   createdAt: timestamp('created_at').defaultNow().notNull(),
   updatedAt: timestamp('updated_at').defaultNow().onUpdateNow().notNull(),
 });
@@ -35,6 +39,7 @@ export const sectionStudents = mysqlTable('section_students', {
 export const classesRelations = relations(classes, ({ one, many }) => ({
   organization: one(organizations, { fields: [classes.organizationId], references: [organizations.id] }),
   sections: many(sections),
+  exams: many(exams),
 }));
 
 export const sectionsRelations = relations(sections, ({ one, many }) => ({

@@ -79,6 +79,30 @@ export class SeedService implements OnModuleInit {
     });
     this.logger.log('Created student user and profile.');
 
+    const classResult = await this.db.insert(classes).values({
+        organizationId: newOrgId,
+        name: '고등 수학 정규반',
+        teacherProfileId: teacherUserId, // 김선생님을 담당으로 지정
+    });
+    const newClassId = classResult[0].insertId;
+    this.logger.log(`Created class with ID: ${newClassId}`);
+    
+    const sectionResult = await this.db.insert(sections).values({
+        classId: newClassId,
+        teacherProfileId: teacherUserId,
+        name: 'A반',
+        status: 'ONGOING',
+    });
+    const newSectionId = sectionResult[0].insertId;
+    this.logger.log(`Created section with ID: ${newSectionId}`);
+
+    // 학생을 분반에 배정
+    await this.db.insert(sectionStudents).values({
+        sectionId: newSectionId,
+        studentProfileId: studentUserId,
+    });
+    this.logger.log('Assigned student to section.');
+
     this.logger.log('Database seeding finished.');
   }
 }

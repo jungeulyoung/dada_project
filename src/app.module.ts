@@ -7,6 +7,7 @@ import { ConfigModule } from '@nestjs/config';
 import { SeedModule } from './seed/seed.module';
 import { DbModule } from './db/db.module'; // DbModule import
 import { NoticesModule } from './notices/notices.module';
+import { ExamsModule } from './exams/exams.module';
 
 
 @Module({
@@ -19,6 +20,7 @@ import { NoticesModule } from './notices/notices.module';
     SeedModule,
     DbModule,
     NoticesModule,
+    ExamsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

@@ -3,3 +3,4 @@ export * from './users';
 export * from './organizations';
 export * from './notices';
 export * from './classes';
+export * from './exams';

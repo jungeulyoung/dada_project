@@ -2,6 +2,7 @@ import { mysqlTable, bigint, varchar, timestamp, mysqlEnum, text } from 'drizzle
 import { organizations } from './organizations';
 import { relations } from 'drizzle-orm';
 import { sectionStudents } from './classes'; 
+import { studentExamResults } from './exams';
 
 
 // 순수 계정 정보
@@ -34,7 +35,7 @@ export const profilesRelations = relations(profiles, ({ one, many }) => ({
   user: one(users, { fields: [profiles.userId], references: [users.id] }),
   organization: one(organizations, { fields: [profiles.organizationId], references: [organizations.id] }),
   parent: one(profiles, { fields: [profiles.parentProfileId], references: [profiles.id], relationName: 'parent_profile' }),
-
   studentSections: many(sectionStudents),
+  examResults: many(studentExamResults),
 
 }));
